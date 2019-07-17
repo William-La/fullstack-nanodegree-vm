@@ -49,9 +49,9 @@ class webServerHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
                 output = ""
-                output += "<a href='/restaurants/new' > Make a New Restaurant Here </a></br></br>"
+                output += "<a href='/restaurants/new'>Make a New Restaurant Here</a></br></br>"
 
-                output += "<html><body>"                
+                output += "<html><body>"
                 for res in restaurants:
                     output += res.name
                     output += "</br>"
@@ -72,7 +72,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                 output += "<html><body>"
                 output += "<h1>Make a New Restaurant</h1>"
                 output += "<form method='POST' enctype='multipart/form-data' action = '/restaurants/new'>"
-                output += "<input name='newRestaurantName' type='text' placeholder='New Restaurant Name'> "
+                output += "<input name='newRestaurantName' type='text' placeholder='New Restaurant Name'>"
                 output += "<input type='submit' value='Create'>"
                 output += "</form></body></html>"
                 self.wfile.write(output)
@@ -90,9 +90,9 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "<h1>"
                     output += myRestaurantQuery.name
                     output += "</h1>"
-                    output += "<form method='POST' enctype='multipart/form-data' action = '/restaurants/%s/edit' >" % restaurantIDPath
-                    output += "<input name = 'newRestaurantName' type='text' placeholder = '%s' >" % myRestaurantQuery.name
-                    output += "<input type = 'submit' value = 'Rename'>"
+                    output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restaurantIDPath
+                    output += "<input name='newRestaurantName' type='text' placeholder='%s'>" % myRestaurantQuery.name
+                    output += "<input type='submit' value='Rename'>"
                     output += "</form>"
                     output += "</body></html>"
 
@@ -110,8 +110,8 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output = ""
                     output += "<html><body>"
                     output += "<h1>Are you sure you want to delete %s?" % myRestaurantQuery.name
-                    output += "<form method='POST' enctype = 'multipart/form-data' action = '/restaurants/%s/delete'>" % restaurantIDPath
-                    output += "<input type = 'submit' value = 'Delete'>"
+                    output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/delete'>" % restaurantIDPath
+                    output += "<input type='submit' value='Delete'>"
                     output += "</form>"
                     output += "</body></html>"
                     self.wfile.write(output)
@@ -129,8 +129,8 @@ class webServerHandler(BaseHTTPRequestHandler):
                     session.delete(myRestaurantQuery)
                     session.commit()
                     self.send_response(301)
-                    self.send_header('Content-type','text/html')
-                    self.send_header('Location','/restaurants')
+                    self.send_header('Content-type', 'text/html')
+                    self.send_header('Location', '/restaurants')
                     self.end_headers()
 
             if self.path.endswith("/edit"):
@@ -159,7 +159,6 @@ class webServerHandler(BaseHTTPRequestHandler):
                     fields = cgi.parse_multipart(self.rfile, pdict)
                     messagecontent = fields.get('newRestaurantName')
 
-                    # Create new Restaurant Object
                     newRestaurant = Restaurant(name=messagecontent[0])
                     session.add(newRestaurant)
                     session.commit()
@@ -181,6 +180,7 @@ def main():
     except KeyboardInterrupt:
         print " ^C entered, stopping web server...."
         server.socket.close()
+
 
 if __name__ == '__main__':
     main()
